@@ -1,0 +1,20 @@
+// This document defines the syntax and structure of the Tiny BASIC language. 
+// It provides the grammar rules for parsing and interpreting Tiny BASIC programs.
+
+<program> ::= <statement>+  // The program consists of one or more statements
+
+<statement> ::= <print_statement> | <let_statement> | <if_statement> | <end_statement> | <rem_statement>
+
+<print_statement> ::= "PRINT" <expression>  // Used to output text on the screen
+<let_statement>   ::= "LET" <variable> "=" <expression>  // Used to assign value to a variable
+<if_statement>    ::= "IF" <expression> <relational_operator> <expression> "THEN" <statement>  // Conditional branching
+<end_statement>   ::= "END"  // Marks the end of the program
+<rem_statement>   ::= "REM" <comment_text>  //  Used to leave comments
+
+<variable>        ::= [A-Z]  // Single uppercase letter
+<integer>         ::= [0-9]+  // One or more digits
+<float>           ::= [0-9]+ "." [0-9]+  // Decimal numbers
+<expression>      ::= <variable> | <integer> | <float> | <expression> <operator> <expression>
+<operator>        ::= "+" | "-" | "*" | "/"
+<relational_operator> ::= "=" | "<" | ">"
+<comment_text>    ::= <any_sequence_of_characters>  // Everything after REM is a comment

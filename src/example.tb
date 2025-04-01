@@ -1,0 +1,3 @@
+LET X = 10
+IF X > 5 THEN PRINT X
+REM This is a comment
