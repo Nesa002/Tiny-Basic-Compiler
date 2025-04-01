@@ -11,7 +11,7 @@
 <end_statement>   ::= "END"  // Marks the end of the program
 <rem_statement>   ::= "REM" <comment_text>  //  Used to leave comments
 
-<variable>        ::= [A-Z]  // Single uppercase letter
+<variable>        ::= [A-Z]+  // One or more uppercase letter
 <integer>         ::= [0-9]+  // One or more digits
 <float>           ::= [0-9]+ "." [0-9]+  // Decimal numbers
 <string>          ::= "\"" [^"]* "\""  // A string enclosed in double quotes, e.g., "Hello"
