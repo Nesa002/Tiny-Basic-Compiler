@@ -1,66 +1,13 @@
 package tokenizer
 
 import (
-	"fmt"
-	"strings"
 	"unicode"
 )
-
-type TokenType string
-
-const (
-	TOKEN_PRINT      TokenType = "PRINT"
-	TOKEN_LET        TokenType = "LET"
-	TOKEN_IF         TokenType = "IF"
-	TOKEN_THEN       TokenType = "THEN"
-	TOKEN_REM        TokenType = "REM"
-	TOKEN_END        TokenType = "END"
-	TOKEN_IDENTIFIER TokenType = "IDENTIFIER"
-	TOKEN_NUMBER     TokenType = "NUMBER"
-	TOKEN_STRING     TokenType = "STRING"
-	TOKEN_OPERATOR   TokenType = "OPERATOR"
-	TOKEN_REL_OP     TokenType = "RELATIONAL_OPERATOR"
-	TOKEN_EOF        TokenType = "EOF"
-)
-
-type Token struct {
-	Type  TokenType
-	Value string
-}
-
-var keywords = map[string]TokenType{
-	"PRINT": TOKEN_PRINT,
-	"LET":   TOKEN_LET,
-	"IF":    TOKEN_IF,
-	"THEN":  TOKEN_THEN,
-	"REM":   TOKEN_REM,
-	"END":   TOKEN_END,
-}
-
-var operators = map[string]TokenType{
-	"+": TOKEN_OPERATOR,
-	"-": TOKEN_OPERATOR,
-	"*": TOKEN_OPERATOR,
-	"/": TOKEN_OPERATOR,
-	"=": TOKEN_REL_OP,
-	"<": TOKEN_REL_OP,
-	">": TOKEN_REL_OP,
-}
-
-type TokenizerError struct {
-	Position int
-	Char     rune
-	Message  string
-}
-
-func (e *TokenizerError) Error() string {
-	return fmt.Sprintf("Tokenizer Error at position %d: Unexpected character '%c'. %s", e.Position, e.Char, e.Message)
-}
 
 func Tokenize(input string) ([]Token, error) {
 	var tokens []Token
 	i := 0
-	runes := []rune(strings.ToUpper(input))
+	runes := []rune(input)
 
 	for i < len(runes) {
 		ch := runes[i]
@@ -70,16 +17,38 @@ func Tokenize(input string) ([]Token, error) {
 			continue
 		}
 
+		// Handle numbers
 		if unicode.IsDigit(ch) {
 			start := i
 			for i < len(runes) && unicode.IsDigit(runes[i]) {
 				i++
 			}
 
+			if i < len(runes) && runes[i] == '.' {
+				i++
+				for i < len(runes) && unicode.IsDigit(runes[i]) {
+					i++
+				}
+			}
+
 			tokens = append(tokens, Token{Type: TOKEN_NUMBER, Value: string(runes[start:i])})
 			continue
 		}
 
+		// Handle comments
+		const remKeyword = "REM"
+		if i+len(remKeyword) <= len(runes) && string(runes[i:i+3]) == remKeyword {
+			i += 3
+			start := i
+
+			for i < len(runes) && runes[i] != '\n' {
+				i++
+			}
+			tokens = append(tokens, Token{Type: TOKEN_COMMENT, Value: string(runes[start : i-1])})
+			continue
+		}
+
+		// Handle keywords and identifiers
 		if unicode.IsLetter(ch) {
 			start := i
 			for i < len(runes) && unicode.IsLetter(runes[i]) {
@@ -96,6 +65,7 @@ func Tokenize(input string) ([]Token, error) {
 			continue
 		}
 
+		// Handle strings
 		if ch == '"' {
 			start := i
 			i++
@@ -113,6 +83,7 @@ func Tokenize(input string) ([]Token, error) {
 			continue
 		}
 
+		// Handle operators
 		op := string(ch)
 		if tokenType, found := operators[op]; found {
 			tokens = append(tokens, Token{Type: tokenType, Value: op})
