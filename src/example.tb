@@ -1,3 +1,4 @@
 LET X = 10
 IF X > 5 THEN PRINT X
+PRINT "Hello, World!"
 REM This is a comment

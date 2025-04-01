@@ -17,6 +17,7 @@ const (
 	TOKEN_END        TokenType = "END"
 	TOKEN_IDENTIFIER TokenType = "IDENTIFIER"
 	TOKEN_NUMBER     TokenType = "NUMBER"
+	TOKEN_STRING     TokenType = "STRING"
 	TOKEN_OPERATOR   TokenType = "OPERATOR"
 	TOKEN_REL_OP     TokenType = "RELATIONAL_OPERATOR"
 	TOKEN_EOF        TokenType = "EOF"
@@ -95,8 +96,24 @@ func Tokenize(input string) ([]Token, error) {
 			continue
 		}
 
-		op := string(ch)
+		if ch == '"' {
+			start := i
+			i++
 
+			for i < len(runes) && runes[i] != '"' {
+				i++
+			}
+
+			if i < len(runes) && runes[i] == '"' {
+				i++
+				tokens = append(tokens, Token{Type: TOKEN_STRING, Value: string(runes[start+1 : i-1])})
+			} else {
+				return nil, &TokenizerError{Position: i, Char: ch, Message: "Unclosed string literal."}
+			}
+			continue
+		}
+
+		op := string(ch)
 		if tokenType, found := operators[op]; found {
 			tokens = append(tokens, Token{Type: tokenType, Value: op})
 			i++
