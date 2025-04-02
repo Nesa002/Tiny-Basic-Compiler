@@ -29,9 +29,11 @@ func Tokenize(input string) ([]Token, error) {
 				for i < len(runes) && unicode.IsDigit(runes[i]) {
 					i++
 				}
+				tokens = append(tokens, Token{Type: TOKEN_FLOAT, Value: string(runes[start:i])})
+				continue
 			}
 
-			tokens = append(tokens, Token{Type: TOKEN_NUMBER, Value: string(runes[start:i])})
+			tokens = append(tokens, Token{Type: TOKEN_INTEGER, Value: string(runes[start:i])})
 			continue
 		}
 
