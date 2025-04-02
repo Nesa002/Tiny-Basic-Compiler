@@ -14,8 +14,7 @@
 <variable>        ::= [A-Z]+  // One or more uppercase letter
 <integer>         ::= [0-9]+  // One or more digits
 <float>           ::= [0-9]+ "." [0-9]+  // Decimal numbers
-<string>          ::= "\"" [^"]* "\""  // A string enclosed in double quotes, e.g., "Hello"
-<expression>      ::= <variable> | <integer> | <float> | <string> | <expression> <operator> <expression>
+<expression>      ::= <variable> | <integer> | <float> | <expression> <operator> <expression>
 <operator>        ::= "+" | "-" | "*" | "/"
 <relational_operator> ::= "=" | "<" | ">"
 <comment_text>    ::= <any_sequence_of_characters>  // Everything after REM is a comment

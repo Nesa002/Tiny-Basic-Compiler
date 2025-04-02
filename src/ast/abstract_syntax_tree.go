@@ -67,12 +67,6 @@ type FloatLiteral struct {
 
 func (fl *FloatLiteral) expressionNode() {}
 
-type StringLiteral struct {
-	Value string
-}
-
-func (sl *StringLiteral) expressionNode() {}
-
 type Identifier struct {
 	Name string
 }

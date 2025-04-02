@@ -67,24 +67,6 @@ func Tokenize(input string) ([]Token, error) {
 			continue
 		}
 
-		// Handle strings
-		if ch == '"' {
-			start := i
-			i++
-
-			for i < len(runes) && runes[i] != '"' {
-				i++
-			}
-
-			if i < len(runes) && runes[i] == '"' {
-				i++
-				tokens = append(tokens, Token{Type: TOKEN_STRING, Value: string(runes[start+1 : i-1])})
-			} else {
-				return nil, &TokenizerError{Position: i, Char: ch, Message: "Unclosed string literal."}
-			}
-			continue
-		}
-
 		// Handle operators
 		op := string(ch)
 		if tokenType, found := operators[op]; found {

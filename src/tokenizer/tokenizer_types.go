@@ -15,7 +15,6 @@ const (
 	TOKEN_IDENTIFIER  TokenType = "IDENTIFIER"
 	TOKEN_INTEGER     TokenType = "INTEGER"
 	TOKEN_FLOAT       TokenType = "FLOAT"
-	TOKEN_STRING      TokenType = "STRING"
 	TOKEN_COMMENT     TokenType = "COMMENT"
 	TOKEN_ADD_SUB     TokenType = "ADD_SUB_OPERATOR"
 	TOKEN_MUL_DIV     TokenType = "MUL_DIV_OPERATOR"
