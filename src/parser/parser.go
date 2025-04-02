@@ -41,15 +41,15 @@ func (p *Parser) parseLetStatement() ast.Statement {
 	p.consume(tokenizer.TOKEN_LET, "Expected LET keyword")
 	varName := p.consume(tokenizer.TOKEN_IDENTIFIER, "Expected an identifier after 'LET'")
 	p.consume(tokenizer.TOKEN_REL_OP, "Expected '=' after variable")
-	value := p.ParseExpression()
+	value := p.parseExpression()
 
 	return &ast.AssignmentStatement{
-		Name:  varName.Value,
+		Name:  ast.Identifier{Name: varName.Value},
 		Value: value,
 	}
 }
 
-func (p *Parser) ParseExpression() ast.Expression {
+func (p *Parser) parseExpression() ast.Expression {
 	left := p.parseTerm()
 
 	for p.peek().Type == tokenizer.TOKEN_REL_OP {
@@ -115,7 +115,7 @@ func (p *Parser) parsePrimaryExpression() ast.Expression {
 		}
 	}
 	if p.match(tokenizer.TOKEN_LEFT_PAREN) {
-		expression := p.ParseExpression()
+		expression := p.parseExpression()
 		p.consume(tokenizer.TOKEN_RIGHT_PAREN, "Expected closing parenthesis.")
 		return expression
 	}

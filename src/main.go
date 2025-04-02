@@ -28,13 +28,47 @@ func main() {
 
 	p := parser.NewParser(tokens)
 
-	expr := p.ParseExpression()
+	program := p.ParseProgram()
 	fmt.Println("Parsed Expression AST:")
-	printAST(expr, 0)
+	printAST(*program, 0)
 }
 
-// Helper function to pretty print the AST (you can adjust this function based on your AST structure)
-func printAST(expr ast.Expression, indent int) {
+// Helper function to pretty print the AST for a program
+func printAST(program ast.Program, indent int) {
+	// Indentation for better readability
+	indentStr := ""
+	for i := 0; i < indent; i++ {
+		indentStr += "  "
+	}
+
+	// Assuming Program is a collection of statements
+	for _, stmt := range program.Statements {
+		printStatement(stmt, indent)
+	}
+}
+
+// Helper function to print each statement
+func printStatement(stmt ast.Statement, indent int) {
+	// Handle different statement types (e.g., Assignment, Expression)
+
+	indentStr := ""
+	for i := 0; i < indent; i++ {
+		indentStr += "  "
+	}
+
+	switch s := stmt.(type) {
+	case *ast.AssignmentStatement:
+		fmt.Printf("%sAssignmentStatement:\n", indentStr)
+		fmt.Printf("%s  Name: %s\n", indentStr, s.Name)
+		fmt.Printf("%s  Value:\n", indentStr)
+		printExpression(s.Value, indent+2)
+	default:
+		fmt.Printf("%sUnknown statement type\n", indentStr)
+	}
+}
+
+// Helper function to print expressions
+func printExpression(expr ast.Expression, indent int) {
 	// Indentation for better readability
 	indentStr := ""
 	for i := 0; i < indent; i++ {
@@ -51,10 +85,10 @@ func printAST(expr ast.Expression, indent int) {
 	case *ast.BinaryExpression:
 		fmt.Printf("%sBinaryExpression:\n", indentStr)
 		fmt.Printf("%s  Left:\n", indentStr)
-		printAST(e.Left, indent+2)
+		printExpression(e.Left, indent+2)
 		fmt.Printf("%s  Operator: %s\n", indentStr, e.Operator)
 		fmt.Printf("%s  Right:\n", indentStr)
-		printAST(e.Right, indent+2)
+		printExpression(e.Right, indent+2)
 	default:
 		fmt.Printf("%sUnknown expression type\n", indentStr)
 	}
