@@ -62,6 +62,10 @@ func printStatement(stmt ast.Statement, indent int) {
 		fmt.Printf("%s  Name: %s\n", indentStr, s.Name)
 		fmt.Printf("%s  Value:\n", indentStr)
 		printExpression(s.Value, indent+2)
+	case *ast.PrintStatement:
+		fmt.Printf("%sPrintStatement:\n", indentStr)
+		fmt.Printf("%s  Expression:\n", indentStr)
+		printExpression(s.Expression, indent+2)
 	default:
 		fmt.Printf("%sUnknown statement type\n", indentStr)
 	}

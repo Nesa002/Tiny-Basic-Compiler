@@ -1,2 +1,2 @@
 LET X = 1 + 0.21
-LET Y = 2
+PRINT 2

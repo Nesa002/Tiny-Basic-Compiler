@@ -31,6 +31,8 @@ func (p *Parser) parseStatement() ast.Statement {
 	switch p.tokens[p.current].Type {
 	case tokenizer.TOKEN_LET:
 		return p.parseLetStatement()
+	case tokenizer.TOKEN_PRINT:
+		return p.parsePrintStatement()
 	}
 
 	p.error("Unknown Statement")
@@ -46,6 +48,15 @@ func (p *Parser) parseLetStatement() ast.Statement {
 	return &ast.AssignmentStatement{
 		Name:  ast.Identifier{Name: varName.Value},
 		Value: value,
+	}
+}
+
+func (p *Parser) parsePrintStatement() ast.Statement {
+	p.consume(tokenizer.TOKEN_PRINT, "Exprected PRINT keyword")
+	expression := p.parseExpression()
+
+	return &ast.PrintStatement{
+		Expression: expression,
 	}
 }
 
