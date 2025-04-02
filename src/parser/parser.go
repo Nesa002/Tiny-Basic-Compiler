@@ -41,7 +41,7 @@ func (p *Parser) parseLetStatement() ast.Statement {
 	p.consume(tokenizer.TOKEN_LET, "Expected LET keyword")
 	varName := p.consume(tokenizer.TOKEN_IDENTIFIER, "Expected an identifier after 'LET'")
 	p.consume(tokenizer.TOKEN_REL_OP, "Expected '=' after variable")
-	value := p.parseExpression()
+	value := p.ParseExpression()
 
 	return &ast.AssignmentStatement{
 		Name:  varName.Value,
@@ -49,13 +49,45 @@ func (p *Parser) parseLetStatement() ast.Statement {
 	}
 }
 
-func (p *Parser) parseExpression() ast.Expression {
+func (p *Parser) ParseExpression() ast.Expression {
+	left := p.parseTerm()
+
+	for p.peek().Type == tokenizer.TOKEN_REL_OP {
+		operator := p.consume(p.peek().Type, "Expected relational operator.").Value
+		right := p.parseTerm()
+
+		left = &ast.BinaryExpression{
+			Left:     left,
+			Operator: operator,
+			Right:    right,
+		}
+	}
+
+	return left
+}
+
+func (p *Parser) parseTerm() ast.Expression {
+	left := p.parseFactor()
+
+	for p.peek().Type == tokenizer.TOKEN_ADD_SUB {
+		operator := p.consume(tokenizer.TOKEN_ADD_SUB, "Expected + or -").Value
+		right := p.parseFactor()
+		left = &ast.BinaryExpression{
+			Left:     left,
+			Operator: operator,
+			Right:    right,
+		}
+	}
+
+	return left
+}
+
+func (p *Parser) parseFactor() ast.Expression {
 	left := p.parsePrimaryExpression()
 
-	for p.peek().Type == tokenizer.TOKEN_OPERATOR || p.peek().Type == tokenizer.TOKEN_REL_OP {
-		operator := p.consume(p.peek().Type, "Expected operator").Value
+	for p.peek().Type == tokenizer.TOKEN_MUL_DIV {
+		operator := p.consume(tokenizer.TOKEN_MUL_DIV, "Expected * or /").Value
 		right := p.parsePrimaryExpression()
-
 		left = &ast.BinaryExpression{
 			Left:     left,
 			Operator: operator,
@@ -81,6 +113,11 @@ func (p *Parser) parsePrimaryExpression() ast.Expression {
 		return &ast.Identifier{
 			Name: p.previous().Value,
 		}
+	}
+	if p.match(tokenizer.TOKEN_LEFT_PAREN) {
+		expression := p.ParseExpression()
+		p.consume(tokenizer.TOKEN_RIGHT_PAREN, "Expected closing parenthesis.")
+		return expression
 	}
 
 	p.error("Exprected expression")

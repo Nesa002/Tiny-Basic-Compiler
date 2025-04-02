@@ -93,6 +93,18 @@ func Tokenize(input string) ([]Token, error) {
 			continue
 		}
 
+		// Handle parentheses
+		if ch == '(' {
+			tokens = append(tokens, Token{Type: TOKEN_LEFT_PAREN, Value: string(ch)})
+			i++
+			continue
+		}
+		if ch == ')' {
+			tokens = append(tokens, Token{Type: TOKEN_RIGHT_PAREN, Value: string(ch)})
+			i++
+			continue
+		}
+
 		return nil, &TokenizerError{Position: i, Char: ch, Message: "Unknown token encountered."}
 
 	}

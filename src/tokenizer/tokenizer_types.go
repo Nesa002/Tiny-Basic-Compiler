@@ -7,19 +7,22 @@ import (
 type TokenType string
 
 const (
-	TOKEN_PRINT      TokenType = "PRINT"
-	TOKEN_LET        TokenType = "LET"
-	TOKEN_IF         TokenType = "IF"
-	TOKEN_THEN       TokenType = "THEN"
-	TOKEN_END        TokenType = "END"
-	TOKEN_IDENTIFIER TokenType = "IDENTIFIER"
-	TOKEN_INTEGER    TokenType = "INTEGER"
-	TOKEN_FLOAT      TokenType = "FLOAT"
-	TOKEN_STRING     TokenType = "STRING"
-	TOKEN_COMMENT    TokenType = "COMMENT"
-	TOKEN_OPERATOR   TokenType = "OPERATOR"
-	TOKEN_REL_OP     TokenType = "RELATIONAL_OPERATOR"
-	TOKEN_EOF        TokenType = "EOF"
+	TOKEN_PRINT       TokenType = "PRINT"
+	TOKEN_LET         TokenType = "LET"
+	TOKEN_IF          TokenType = "IF"
+	TOKEN_THEN        TokenType = "THEN"
+	TOKEN_END         TokenType = "END"
+	TOKEN_IDENTIFIER  TokenType = "IDENTIFIER"
+	TOKEN_INTEGER     TokenType = "INTEGER"
+	TOKEN_FLOAT       TokenType = "FLOAT"
+	TOKEN_STRING      TokenType = "STRING"
+	TOKEN_COMMENT     TokenType = "COMMENT"
+	TOKEN_ADD_SUB     TokenType = "ADD_SUB_OPERATOR"
+	TOKEN_MUL_DIV     TokenType = "MUL_DIV_OPERATOR"
+	TOKEN_REL_OP      TokenType = "RELATIONAL_OPERATOR"
+	TOKEN_LEFT_PAREN  TokenType = "LEFT_PAREN"
+	TOKEN_RIGHT_PAREN TokenType = "RIGHT_PAREN"
+	TOKEN_EOF         TokenType = "EOF"
 )
 
 type Token struct {
@@ -36,10 +39,10 @@ var keywords = map[string]TokenType{
 }
 
 var operators = map[string]TokenType{
-	"+": TOKEN_OPERATOR,
-	"-": TOKEN_OPERATOR,
-	"*": TOKEN_OPERATOR,
-	"/": TOKEN_OPERATOR,
+	"+": TOKEN_ADD_SUB,
+	"-": TOKEN_ADD_SUB,
+	"*": TOKEN_MUL_DIV,
+	"/": TOKEN_MUL_DIV,
 	"=": TOKEN_REL_OP,
 	"<": TOKEN_REL_OP,
 	">": TOKEN_REL_OP,
