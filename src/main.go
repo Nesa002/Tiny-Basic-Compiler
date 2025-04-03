@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"tiny-basic/src/ast"
 	"tiny-basic/src/parser"
+	"tiny-basic/src/semantic"
 	"tiny-basic/src/tokenizer"
 )
 
@@ -23,15 +23,20 @@ func main() {
 		return
 	}
 
-	for _, token := range tokens {
-		fmt.Printf("Token(Type: %s, Value: %s, Line: %s)\n", token.Type, token.Value, strconv.Itoa(token.Line))
-	}
+	// for _, token := range tokens {
+	// 	fmt.Printf("Token(Type: %s, Value: %s, Line: %s)\n", token.Type, token.Value, strconv.Itoa(token.Line))
+	// }
 
 	p := parser.NewParser(tokens)
 
 	program := p.ParseProgram()
-	fmt.Println("Parsed Expression AST:")
-	printAST(*program, 0)
+
+	sa := semantic.NewSemanticAnalyzer()
+	if err := sa.Analyze(program); err != nil {
+		fmt.Println("Error during semantic analysis:", err)
+	}
+	// fmt.Println("Parsed Expression AST:")
+	// printAST(*program, 0)
 }
 
 // Helper function to pretty print the AST for a program
@@ -54,7 +59,7 @@ func printStatement(stmt ast.Statement, indent int) {
 
 	indentStr := ""
 	for i := 0; i < indent; i++ {
-		indentStr += "  "
+		indentStr += "    "
 	}
 
 	switch s := stmt.(type) {

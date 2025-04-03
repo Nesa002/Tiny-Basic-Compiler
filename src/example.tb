@@ -1,7 +1,6 @@
 REM Hello World
-LET Y = 5
-LET X = (Y + 2) * 3
+LET X = (1 + 2) * 3
 PRINT 1
 IF X == 9
-THEN PRINT X
+THEN PRINT 0
 ELSE PRINT 0

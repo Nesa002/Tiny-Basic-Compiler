@@ -3,7 +3,7 @@
 
 <program> ::= <statement>+  // The program consists of one or more statements
 
-<statement> ::= <print_statement> | <let_statement> | <if_statement> | <end_statement> | <rem_statement>
+<statement> ::= <print_statement> | <let_statement> | assignment_statement | <if_statement> | <end_statement> | <rem_statement>
 
 <print_statement> ::= "PRINT" <expression>  // Used to output text on the screen
 <let_statement>   ::= "LET" <variable> "=" <expression>  // Used to assign value to a variable

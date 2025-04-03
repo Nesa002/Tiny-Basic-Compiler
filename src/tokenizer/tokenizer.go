@@ -8,7 +8,7 @@ func Tokenize(input string) ([]Token, error) {
 	var tokens []Token
 	i := 0
 	runes := []rune(input)
-	line := 0
+	line := 1
 
 	for i < len(runes) {
 		ch := runes[i]
