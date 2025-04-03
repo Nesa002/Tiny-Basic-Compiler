@@ -46,14 +46,30 @@ func (p *Parser) parseStatement() ast.Statement {
 		return nil
 	}
 
-	p.error("Unknown Statement")
+	if p.peek().Type == tokenizer.TOKEN_IDENTIFIER {
+		return p.parseAssignmentStatement()
+	}
+
+	p.parseError("Unknown Statement")
 	return nil
 }
 
 func (p *Parser) parseLetStatement() ast.Statement {
 	p.consume(tokenizer.TOKEN_LET, "Expected LET keyword")
-	varName := p.consume(tokenizer.TOKEN_IDENTIFIER, "Expected an identifier after 'LET'")
-	p.consume(tokenizer.TOKEN_EQUALS, "Expected '=' after variable")
+	varName := p.consume(tokenizer.TOKEN_IDENTIFIER, "Expected an identifier")
+	p.consume(tokenizer.TOKEN_EQUALS, "Expected '=' operator for assignment")
+	value := p.parseExpression()
+
+	return &ast.LetStatement{
+		Identifier: ast.Identifier{Name: varName.Value},
+		Value:      value,
+	}
+}
+
+func (p *Parser) parseAssignmentStatement() ast.Statement {
+	varName := p.consume(tokenizer.TOKEN_IDENTIFIER, "Expected variable name (identifier)")
+	p.consume(tokenizer.TOKEN_EQUALS, "Expected '=' operator for assignment")
+
 	value := p.parseExpression()
 
 	return &ast.AssignmentStatement{
@@ -175,7 +191,7 @@ func (p *Parser) parsePrimaryExpression() ast.Expression {
 		return expression
 	}
 
-	p.error("Exprected expression")
+	p.parseError("Exprected expression")
 	return nil
 }
 
@@ -187,7 +203,7 @@ func (p *Parser) consume(expected tokenizer.TokenType, msg string) tokenizer.Tok
 	if p.match(expected) {
 		return p.previous()
 	}
-	p.error(msg)
+	p.parseError(msg)
 	return tokenizer.Token{}
 }
 
@@ -203,8 +219,8 @@ func (p *Parser) previous() tokenizer.Token {
 	return p.tokens[p.current-1]
 }
 
-func (p *Parser) error(msg string) {
-	panic(fmt.Sprintf("Parse error at token %v: %s", p.tokens[p.current], msg))
+func (p *Parser) parseError(msg string) {
+	panic(fmt.Sprintf("Parse error at line %d, token {%s: %s}: %s", p.tokens[p.current].Line, p.tokens[p.current].Type, p.tokens[p.current].Value, msg))
 }
 
 func atof(str string) float64 {

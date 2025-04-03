@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"tiny-basic/src/ast"
 	"tiny-basic/src/parser"
 	"tiny-basic/src/tokenizer"
@@ -23,7 +24,7 @@ func main() {
 	}
 
 	for _, token := range tokens {
-		fmt.Printf("Token(Type: %s, Value: %s)\n", token.Type, token.Value)
+		fmt.Printf("Token(Type: %s, Value: %s, Line: %s)\n", token.Type, token.Value, strconv.Itoa(token.Line))
 	}
 
 	p := parser.NewParser(tokens)
@@ -57,6 +58,11 @@ func printStatement(stmt ast.Statement, indent int) {
 	}
 
 	switch s := stmt.(type) {
+	case *ast.LetStatement:
+		fmt.Printf("%sLetStatement:\n", indentStr)
+		fmt.Printf("%s  Identifier: %s\n", indentStr, s.Identifier)
+		fmt.Printf("%s  Value:\n", indentStr)
+		printExpression(s.Value, indent+2)
 	case *ast.AssignmentStatement:
 		fmt.Printf("%sAssignmentStatement:\n", indentStr)
 		fmt.Printf("%s  Identifier: %s\n", indentStr, s.Identifier)

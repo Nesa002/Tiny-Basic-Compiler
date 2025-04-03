@@ -7,6 +7,7 @@
 
 <print_statement> ::= "PRINT" <expression>  // Used to output text on the screen
 <let_statement>   ::= "LET" <variable> "=" <expression>  // Used to assign value to a variable
+<assignment_statement>   ::= <variable> "=" <expression> // Used to reassign value to a created variable
 <if_statement>    ::= "IF" <expression> <relational_operator> <expression> "THEN" <statement>  // Conditional branching
 <end_statement>   ::= "END"  // Marks the end of the program
 <rem_statement>   ::= "REM" <comment_text>  //  Used to leave comments
@@ -16,5 +17,5 @@
 <float>           ::= [0-9]+ "." [0-9]+  // Decimal numbers
 <expression>      ::= <variable> | <integer> | <float> | <expression> <operator> <expression>
 <operator>        ::= "+" | "-" | "*" | "/"
-<relational_operator> ::= "=" | "<" | ">"
+<relational_operator> ::= "==" | "<" | ">"
 <comment_text>    ::= <any_sequence_of_characters>  // Everything after REM is a comment

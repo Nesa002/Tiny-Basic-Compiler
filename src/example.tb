@@ -1,8 +1,7 @@
-LET X = (-1 + 2) * 3
 REM Hello World
+LET Y = 5
+LET X = (Y + 2) * 3
 PRINT 1
 IF X == 9
 THEN PRINT X
 ELSE PRINT 0
-END
-
