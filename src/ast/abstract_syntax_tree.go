@@ -26,8 +26,8 @@ type PrintStatement struct {
 func (ps *PrintStatement) statementNode() {}
 
 type AssignmentStatement struct {
-	Name  Identifier
-	Value Expression
+	Identifier Identifier
+	Value      Expression
 }
 
 func (as *AssignmentStatement) statementNode() {}

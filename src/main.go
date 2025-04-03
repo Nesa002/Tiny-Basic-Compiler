@@ -59,13 +59,17 @@ func printStatement(stmt ast.Statement, indent int) {
 	switch s := stmt.(type) {
 	case *ast.AssignmentStatement:
 		fmt.Printf("%sAssignmentStatement:\n", indentStr)
-		fmt.Printf("%s  Name: %s\n", indentStr, s.Name)
+		fmt.Printf("%s  Identifier: %s\n", indentStr, s.Identifier)
 		fmt.Printf("%s  Value:\n", indentStr)
 		printExpression(s.Value, indent+2)
 	case *ast.PrintStatement:
 		fmt.Printf("%sPrintStatement:\n", indentStr)
 		fmt.Printf("%s  Expression:\n", indentStr)
 		printExpression(s.Expression, indent+2)
+	case *ast.CommentStatement:
+		fmt.Printf("%sCommentStatement:\n", indentStr)
+		fmt.Printf("%s  Text:\n", indentStr)
+		fmt.Printf("   %s\n", s.Text)
 	default:
 		fmt.Printf("%sUnknown statement type\n", indentStr)
 	}

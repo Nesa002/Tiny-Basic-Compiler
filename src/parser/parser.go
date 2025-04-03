@@ -22,6 +22,9 @@ func (p *Parser) ParseProgram() *ast.Program {
 	for p.current < len(p.tokens)-1 {
 		statement := p.parseStatement()
 		program.Statements = append(program.Statements, statement)
+		if statement == nil {
+			return program
+		}
 	}
 
 	return program
@@ -33,6 +36,10 @@ func (p *Parser) parseStatement() ast.Statement {
 		return p.parseLetStatement()
 	case tokenizer.TOKEN_PRINT:
 		return p.parsePrintStatement()
+	case tokenizer.TOKEN_COMMENT:
+		return p.parseCommentStatement()
+	case tokenizer.TOKEN_EOF:
+		return nil
 	}
 
 	p.error("Unknown Statement")
@@ -46,8 +53,8 @@ func (p *Parser) parseLetStatement() ast.Statement {
 	value := p.parseExpression()
 
 	return &ast.AssignmentStatement{
-		Name:  ast.Identifier{Name: varName.Value},
-		Value: value,
+		Identifier: ast.Identifier{Name: varName.Value},
+		Value:      value,
 	}
 }
 
@@ -57,6 +64,14 @@ func (p *Parser) parsePrintStatement() ast.Statement {
 
 	return &ast.PrintStatement{
 		Expression: expression,
+	}
+}
+
+func (p *Parser) parseCommentStatement() ast.Statement {
+	text := p.consume(tokenizer.TOKEN_COMMENT, "Expected Comment")
+
+	return &ast.CommentStatement{
+		Text: text.Value,
 	}
 }
 

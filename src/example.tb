@@ -1,2 +1,3 @@
-LET X = 1 + 0.21
-PRINT 2
+LET X = (1 + 2) * 3
+PRINT 1
+REM Hello World
