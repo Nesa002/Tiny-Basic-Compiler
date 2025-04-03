@@ -18,8 +18,13 @@ func Tokenize(input string) ([]Token, error) {
 		}
 
 		// Handle numbers
-		if unicode.IsDigit(ch) {
+		if unicode.IsDigit(ch) || ch == '-' {
 			start := i
+
+			if ch == '-' {
+				i++
+			}
+
 			for i < len(runes) && unicode.IsDigit(runes[i]) {
 				i++
 			}

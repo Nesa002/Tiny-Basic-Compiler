@@ -1,4 +1,4 @@
-LET X = (1 + 2) * 3
+LET X = (-1 + 2) * 3
 REM Hello World
 PRINT 1
 IF X == 9
