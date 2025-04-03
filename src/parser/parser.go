@@ -38,6 +38,8 @@ func (p *Parser) parseStatement() ast.Statement {
 		return p.parsePrintStatement()
 	case tokenizer.TOKEN_COMMENT:
 		return p.parseCommentStatement()
+	case tokenizer.TOKEN_END:
+		return p.parseEndStatement()
 	case tokenizer.TOKEN_EOF:
 		return nil
 	}
@@ -49,7 +51,7 @@ func (p *Parser) parseStatement() ast.Statement {
 func (p *Parser) parseLetStatement() ast.Statement {
 	p.consume(tokenizer.TOKEN_LET, "Expected LET keyword")
 	varName := p.consume(tokenizer.TOKEN_IDENTIFIER, "Expected an identifier after 'LET'")
-	p.consume(tokenizer.TOKEN_REL_OP, "Expected '=' after variable")
+	p.consume(tokenizer.TOKEN_EQUALS, "Expected '=' after variable")
 	value := p.parseExpression()
 
 	return &ast.AssignmentStatement{
@@ -68,11 +70,17 @@ func (p *Parser) parsePrintStatement() ast.Statement {
 }
 
 func (p *Parser) parseCommentStatement() ast.Statement {
-	text := p.consume(tokenizer.TOKEN_COMMENT, "Expected Comment")
+	text := p.consume(tokenizer.TOKEN_COMMENT, "Expected comment")
 
 	return &ast.CommentStatement{
 		Text: text.Value,
 	}
+}
+
+func (p *Parser) parseEndStatement() ast.Statement {
+	p.consume(tokenizer.TOKEN_END, "Expected END keyword")
+
+	return &ast.EndStatement{}
 }
 
 func (p *Parser) parseExpression() ast.Expression {

@@ -46,7 +46,7 @@ func Tokenize(input string) ([]Token, error) {
 			for i < len(runes) && runes[i] != '\n' {
 				i++
 			}
-			tokens = append(tokens, Token{Type: TOKEN_COMMENT, Value: string(runes[start : i-1])})
+			tokens = append(tokens, Token{Type: TOKEN_COMMENT, Value: string(runes[start:i])})
 			continue
 		}
 
@@ -64,6 +64,13 @@ func Tokenize(input string) ([]Token, error) {
 			} else {
 				tokens = append(tokens, Token{Type: TOKEN_IDENTIFIER, Value: word})
 			}
+			continue
+		}
+
+		// Handle ==
+		if ch == '=' && i+1 < len(runes) && runes[i+1] == '=' {
+			tokens = append(tokens, Token{Type: TOKEN_REL_OP, Value: "=="})
+			i += 2
 			continue
 		}
 

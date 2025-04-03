@@ -19,6 +19,7 @@ const (
 	TOKEN_ADD_SUB     TokenType = "ADD_SUB_OPERATOR"
 	TOKEN_MUL_DIV     TokenType = "MUL_DIV_OPERATOR"
 	TOKEN_REL_OP      TokenType = "RELATIONAL_OPERATOR"
+	TOKEN_EQUALS      TokenType = "EQUALS_OPERATOR"
 	TOKEN_LEFT_PAREN  TokenType = "LEFT_PAREN"
 	TOKEN_RIGHT_PAREN TokenType = "RIGHT_PAREN"
 	TOKEN_EOF         TokenType = "EOF"
@@ -38,13 +39,14 @@ var keywords = map[string]TokenType{
 }
 
 var operators = map[string]TokenType{
-	"+": TOKEN_ADD_SUB,
-	"-": TOKEN_ADD_SUB,
-	"*": TOKEN_MUL_DIV,
-	"/": TOKEN_MUL_DIV,
-	"=": TOKEN_REL_OP,
-	"<": TOKEN_REL_OP,
-	">": TOKEN_REL_OP,
+	"+":  TOKEN_ADD_SUB,
+	"-":  TOKEN_ADD_SUB,
+	"*":  TOKEN_MUL_DIV,
+	"/":  TOKEN_MUL_DIV,
+	"=":  TOKEN_EQUALS,
+	"==": TOKEN_REL_OP,
+	"<":  TOKEN_REL_OP,
+	">":  TOKEN_REL_OP,
 }
 
 type TokenizerError struct {

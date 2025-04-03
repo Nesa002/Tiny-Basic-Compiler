@@ -70,6 +70,8 @@ func printStatement(stmt ast.Statement, indent int) {
 		fmt.Printf("%sCommentStatement:\n", indentStr)
 		fmt.Printf("%s  Text:\n", indentStr)
 		fmt.Printf("   %s\n", s.Text)
+	case *ast.EndStatement:
+		fmt.Printf("%sEndStatement\n", indentStr)
 	default:
 		fmt.Printf("%sUnknown statement type\n", indentStr)
 	}
