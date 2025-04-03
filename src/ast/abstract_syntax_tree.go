@@ -35,6 +35,7 @@ func (as *AssignmentStatement) statementNode() {}
 type IfStatement struct {
 	Condition  Expression
 	ThenBranch Statement
+	ElseBranch Statement
 }
 
 func (ifs *IfStatement) statementNode() {}

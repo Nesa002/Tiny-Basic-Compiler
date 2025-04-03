@@ -68,10 +68,19 @@ func printStatement(stmt ast.Statement, indent int) {
 		printExpression(s.Expression, indent+2)
 	case *ast.CommentStatement:
 		fmt.Printf("%sCommentStatement:\n", indentStr)
-		fmt.Printf("%s  Text:\n", indentStr)
-		fmt.Printf("   %s\n", s.Text)
+		fmt.Printf("%s  Text: %s\n", indentStr, s.Text)
 	case *ast.EndStatement:
 		fmt.Printf("%sEndStatement\n", indentStr)
+	case *ast.IfStatement:
+		fmt.Printf("%sIfStatement:\n", indentStr)
+		fmt.Printf("%s  Condition:\n", indentStr)
+		printExpression(s.Condition, indent+2)
+		fmt.Printf("%s  ThenBranch:\n", indentStr)
+		printStatement(s.ThenBranch, indent+2)
+		if s.ElseBranch != nil {
+			fmt.Printf("%s  ElseBranch:\n", indentStr)
+			printStatement(s.ElseBranch, indent+2)
+		}
 	default:
 		fmt.Printf("%sUnknown statement type\n", indentStr)
 	}

@@ -34,6 +34,8 @@ func (p *Parser) parseStatement() ast.Statement {
 	switch p.tokens[p.current].Type {
 	case tokenizer.TOKEN_LET:
 		return p.parseLetStatement()
+	case tokenizer.TOKEN_IF:
+		return p.parseIfStatement()
 	case tokenizer.TOKEN_PRINT:
 		return p.parsePrintStatement()
 	case tokenizer.TOKEN_COMMENT:
@@ -57,6 +59,25 @@ func (p *Parser) parseLetStatement() ast.Statement {
 	return &ast.AssignmentStatement{
 		Identifier: ast.Identifier{Name: varName.Value},
 		Value:      value,
+	}
+}
+
+func (p *Parser) parseIfStatement() ast.Statement {
+	p.consume(tokenizer.TOKEN_IF, "Expected IF keyword")
+	condition := p.parseExpression()
+	p.consume(tokenizer.TOKEN_THEN, "Exprected THEN keyword after condition")
+	thenBranch := p.parseStatement()
+
+	var elseBranch ast.Statement = nil
+	if p.peek().Type == tokenizer.TOKEN_ELSE {
+		p.consume(tokenizer.TOKEN_ELSE, "Expected ELSE keyword")
+		elseBranch = p.parseStatement()
+	}
+
+	return &ast.IfStatement{
+		Condition:  condition,
+		ThenBranch: thenBranch,
+		ElseBranch: elseBranch,
 	}
 }
 

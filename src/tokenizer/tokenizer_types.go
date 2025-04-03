@@ -11,6 +11,7 @@ const (
 	TOKEN_LET         TokenType = "LET"
 	TOKEN_IF          TokenType = "IF"
 	TOKEN_THEN        TokenType = "THEN"
+	TOKEN_ELSE        TokenType = "ELSE"
 	TOKEN_END         TokenType = "END"
 	TOKEN_IDENTIFIER  TokenType = "IDENTIFIER"
 	TOKEN_INTEGER     TokenType = "INTEGER"
@@ -35,6 +36,7 @@ var keywords = map[string]TokenType{
 	"LET":   TOKEN_LET,
 	"IF":    TOKEN_IF,
 	"THEN":  TOKEN_THEN,
+	"ELSE":  TOKEN_ELSE,
 	"END":   TOKEN_END,
 }
 
