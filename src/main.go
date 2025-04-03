@@ -34,7 +34,13 @@ func main() {
 	sa := semantic.NewSemanticAnalyzer()
 	if err := sa.Analyze(program); err != nil {
 		fmt.Println("Error during semantic analysis:", err)
+		return
 	}
+	warnings := sa.CheckUnusedVariables()
+	for _, warning := range warnings {
+		fmt.Println(warning)
+	}
+
 	// fmt.Println("Parsed Expression AST:")
 	// printAST(*program, 0)
 }

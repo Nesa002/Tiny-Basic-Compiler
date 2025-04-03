@@ -23,6 +23,18 @@ func (sa *SemanticAnalyzer) Analyze(program *ast.Program) error {
 	return nil
 }
 
+func (sa *SemanticAnalyzer) CheckUnusedVariables() []string {
+	var warnings []string
+
+	for _, entry := range sa.symbolTable.variables {
+		if entry.Used {
+			continue
+		}
+		warnings = append(warnings, fmt.Sprintf("Warning: Variable '%s' is declared but never used", entry.Name))
+	}
+	return warnings
+}
+
 func (sa *SemanticAnalyzer) analyzeStatement(stmt ast.Statement) error {
 	switch stmt := stmt.(type) {
 	case *ast.LetStatement:
