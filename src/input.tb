@@ -1,7 +1,7 @@
 REM Hello World
 LET X = (1 + 2) * 3
 LET Y = 0
-PRINT Y
-IF 1 == 9
+
+IF X == 9
 THEN PRINT 0
-ELSE PRINT X
+ELSE PRINT X + 1
