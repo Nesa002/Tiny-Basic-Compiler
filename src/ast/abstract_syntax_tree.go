@@ -12,13 +12,6 @@ type Statement interface {
 	statementNode()
 }
 
-// This is used for standalone Expressions like "Hello" in PRINT "Hello"
-type ExpressionStatement struct {
-	Expression Expression
-}
-
-func (es *ExpressionStatement) statementNode() {}
-
 type PrintStatement struct {
 	Expression Expression
 }
@@ -46,6 +39,13 @@ type IfStatement struct {
 }
 
 func (ifs *IfStatement) statementNode() {}
+
+type WhileStatement struct {
+	Condition Expression
+	DoBranch  []Statement
+}
+
+func (ifs *WhileStatement) statementNode() {}
 
 type CommentStatement struct {
 	Text string

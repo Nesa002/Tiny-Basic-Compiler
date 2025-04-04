@@ -8,7 +8,8 @@
 <print_statement> ::= "PRINT" <expression>  // Used to output text on the screen
 <let_statement>   ::= "LET" <variable> "=" <expression>  // Used to assign value to a variable
 <assignment_statement>   ::= <variable> "=" <expression> // Used to reassign value to a created variable
-<if_statement>    ::= "IF" <expression> <relational_operator> <expression> "THEN" <statement>  // Conditional branching
+<if_statement>    ::= "IF" <expression> <relational_operator> <expression> "THEN" <statement> [ "ELSE" <statement> ]  // Conditional branching
+<while_statement>    ::= "WHILE" <expression> <relational_operator> <expression> "DO" <statement>+ "END"  // While loop
 <end_statement>   ::= "END"  // Marks the end of the program
 <rem_statement>   ::= "REM" <comment_text>  //  Used to leave comments
 

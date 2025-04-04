@@ -7,7 +7,8 @@ import (
 )
 
 type CodeGenerator struct {
-	builder strings.Builder
+	builder          strings.Builder
+	indentationLevel int
 }
 
 func NewCodeGenerator() *CodeGenerator {
@@ -30,6 +31,8 @@ func (cg *CodeGenerator) generateStatement(stmt ast.Statement) string {
 		return cg.generateIfStatement(stmt)
 	case *ast.LetStatement:
 		return cg.generateLetStatement(stmt)
+	case *ast.WhileStatement:
+		return cg.generateWhileStatement(stmt)
 	case *ast.AssignmentStatement:
 		return cg.generateAssignmentStatement(stmt)
 	case *ast.EndStatement:
@@ -55,6 +58,22 @@ func (cg *CodeGenerator) generateIfStatement(stmt *ast.IfStatement) string {
 	}
 
 	return fmt.Sprintf("if (%s) {\n\t%s\n}%s", condition, thenBranch, elseBranch)
+}
+
+func (cg *CodeGenerator) generateWhileStatement(stmt *ast.WhileStatement) string {
+	condition := cg.generateExpression(stmt.Condition, false)
+	cg.indentationLevel++
+
+	doBranch := []string{}
+	for _, statement := range stmt.DoBranch {
+		doBranch = append(doBranch, fmt.Sprintf("%s%s", strings.Repeat("\t", cg.indentationLevel), cg.generateStatement(statement)))
+	}
+
+	cg.indentationLevel--
+	return fmt.Sprintf("while (%s) {\n%s\n%s}",
+		condition,
+		strings.Join(doBranch, "\n"),
+		strings.Repeat("\t", cg.indentationLevel))
 }
 
 func (cg *CodeGenerator) generateLetStatement(stmt *ast.LetStatement) string {

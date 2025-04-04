@@ -1,7 +1,11 @@
-REM Hello World
-LET X = (1 + 2) * 3
+REM Example Program
+LET X = 0
 LET Y = 0
-
-IF X == 9
-THEN PRINT 0
-ELSE PRINT X + 1
+WHILE X < 2 DO
+Y = 0
+WHILE Y < 2 DO
+PRINT X
+Y = Y + 1
+STOP
+X = X + 1
+STOP

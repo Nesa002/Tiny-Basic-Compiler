@@ -36,6 +36,8 @@ func (p *Parser) parseStatement() ast.Statement {
 		return p.parseLetStatement()
 	case tokenizer.TOKEN_IF:
 		return p.parseIfStatement()
+	case tokenizer.TOKEN_WHILE:
+		return p.parseWhileStatement()
 	case tokenizer.TOKEN_PRINT:
 		return p.parsePrintStatement()
 	case tokenizer.TOKEN_COMMENT:
@@ -94,6 +96,24 @@ func (p *Parser) parseIfStatement() ast.Statement {
 		Condition:  condition,
 		ThenBranch: thenBranch,
 		ElseBranch: elseBranch,
+	}
+}
+
+func (p *Parser) parseWhileStatement() ast.Statement {
+	p.consume(tokenizer.TOKEN_WHILE, "Expected WHILE keyword")
+	condition := p.parseExpression()
+	p.consume(tokenizer.TOKEN_DO, "Exprected DO keyword after condition")
+
+	doBranch := []ast.Statement{}
+
+	for p.peek().Type != tokenizer.TOKEN_STOP {
+		doBranch = append(doBranch, p.parseStatement())
+	}
+	p.consume(tokenizer.TOKEN_STOP, "Exprected STOP keyword after condition")
+
+	return &ast.WhileStatement{
+		Condition: condition,
+		DoBranch:  doBranch,
 	}
 }
 

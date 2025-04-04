@@ -45,6 +45,8 @@ func (sa *SemanticAnalyzer) analyzeStatement(stmt ast.Statement) error {
 		return sa.analyzePrintStatement(stmt)
 	case *ast.IfStatement:
 		return sa.analyzeIfStatement(stmt)
+	case *ast.WhileStatement:
+		return sa.analyzeWhileStatement(stmt)
 	case *ast.EndStatement, *ast.CommentStatement:
 		return nil
 	default:
@@ -86,6 +88,23 @@ func (sa *SemanticAnalyzer) analyzeIfStatement(stmt *ast.IfStatement) error {
 		}
 	}
 
+	return nil
+}
+
+func (sa *SemanticAnalyzer) analyzeWhileStatement(stmt *ast.WhileStatement) error {
+	if err := sa.analyzeExpression(stmt.Condition); err != nil {
+		return err
+	}
+
+	if !sa.isBooleanExpression(stmt.Condition) {
+		return fmt.Errorf("condition in WHILE statement must be a comparison (==, <, >), got: %T", stmt.Condition)
+	}
+
+	for _, statement := range stmt.DoBranch {
+		if err := sa.analyzeStatement(statement); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

@@ -12,6 +12,9 @@ const (
 	TOKEN_IF          TokenType = "IF"
 	TOKEN_THEN        TokenType = "THEN"
 	TOKEN_ELSE        TokenType = "ELSE"
+	TOKEN_WHILE       TokenType = "WHILE"
+	TOKEN_DO          TokenType = "DO"
+	TOKEN_STOP        TokenType = "STOP"
 	TOKEN_END         TokenType = "END"
 	TOKEN_IDENTIFIER  TokenType = "IDENTIFIER"
 	TOKEN_INTEGER     TokenType = "INTEGER"
@@ -38,6 +41,9 @@ var keywords = map[string]TokenType{
 	"IF":    TOKEN_IF,
 	"THEN":  TOKEN_THEN,
 	"ELSE":  TOKEN_ELSE,
+	"WHILE": TOKEN_WHILE,
+	"DO":    TOKEN_DO,
+	"STOP":  TOKEN_STOP,
 	"END":   TOKEN_END,
 }
 
