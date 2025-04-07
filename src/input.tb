@@ -1,6 +1,7 @@
 REM Example Program
 LET X = 0
 LET Y = 0
+END
 WHILE X < 2 DO
 Y = 0
 WHILE Y < 2 DO
