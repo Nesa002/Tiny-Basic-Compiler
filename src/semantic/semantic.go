@@ -55,10 +55,11 @@ func (sa *SemanticAnalyzer) analyzeStatement(stmt ast.Statement) error {
 }
 
 func (sa *SemanticAnalyzer) analyzeLetStatement(stmt *ast.LetStatement) error {
-	if err := sa.symbolTable.DeclareVariable(stmt.Identifier.Name, stmt.Value); err != nil {
+	if err := sa.analyzeExpression(stmt.Value); err != nil {
 		return err
 	}
-	return sa.analyzeExpression(stmt.Value)
+
+	return sa.symbolTable.DeclareVariable(stmt.Identifier.Name, stmt.Value)
 }
 
 func (sa *SemanticAnalyzer) analyzeAssignmentStatement(stmt *ast.AssignmentStatement) error {
